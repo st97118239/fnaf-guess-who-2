@@ -2,11 +2,11 @@
 public class Character
 {
     public string characterName;
-    public int idx;
+    public int idx = -1;
     public string shortCharacterName;
     public string pronouns;
-    public string decadeMade;
-    public string yearMade;
+    public int decadeMade = -1;
+    public int yearMade = -1;
     public bool estimatedYear;
     public bool isBorn;
     public string[] familyMembers;
@@ -17,8 +17,8 @@ public class Character
     public string[] aliases;
     public string animClass;
     public string model;
-    public string height;
-    public string weight;
+    public float height = -1;
+    public float weight = -1;
     public string mainColor;
     public string secondaryColor;
     public string eyeColor;

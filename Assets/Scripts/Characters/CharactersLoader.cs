@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.Overlays;
 
 #if UNITY_EDITOR
 using System.IO;
@@ -50,25 +49,21 @@ public class CharactersLoader : MonoBehaviour
     {
         characters = new();
 
-        int idx = 0;
-
-        while (true)
+        for (int i = 0; i < charCount; i++)
         {
-            TextAsset charText = Resources.Load<TextAsset>(path + idx);
+            TextAsset charText = Resources.Load<TextAsset>(path + i);
 
             if (charText == null)
             {
-                Debug.Log("No more characters found.");
-                break;
+                Debug.LogWarning("No character found at " + i + ". Trying on next index, if there's nothing else then please lower the character count.");
+                continue;
             }
 
             string json = charText.text;
-
             Character character = JsonUtility.FromJson<Character>(json);
 
             Debug.Log("Found character " + character.characterName);
             characters.Add(character);
-            idx++;
         }
     }
 }
