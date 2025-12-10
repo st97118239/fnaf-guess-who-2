@@ -157,7 +157,7 @@ public class CustomNetworkRoomManager : NetworkRoomManager
     /// </summary>
     public override void OnRoomServerPlayersNotReady()
     {
-
+        Debug.Log("OnRoomServerPlayersNotReady");
     }
 
     #endregion

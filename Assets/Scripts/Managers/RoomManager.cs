@@ -1,3 +1,4 @@
+using System;
 using Mirror;
 using TMPro;
 using UnityEngine;
@@ -11,9 +12,9 @@ public class RoomManager : NetworkBehaviour
 
     public CustomNetworkRoomPlayer roomPlayer;
 
-    private Button readyButton;
-    private TMP_Text readyButtonText;
-    private Button leaveButton;
+    [SerializeField] private Button readyButton;
+    [SerializeField] private TMP_Text readyButtonText;
+    [SerializeField] private Button leaveButton;
 
     [SerializeField] private string readyButtonTextEnabled = "Ready";
     [SerializeField] private string readyButtonTextDisabled = "Waiting";
@@ -36,7 +37,8 @@ public class RoomManager : NetworkBehaviour
             readyButton = GameObject.Find("Ready Button").GetComponent<Button>();
         readyButton.onClick.AddListener(ReadyButton);
         if (readyButtonText == null)
-            readyButtonText = GameObject.Find("Ready Button Text").GetComponent<TextMeshPro>();
+            readyButtonText = GameObject.Find("Ready Button Text").GetComponent<TMP_Text>();
+        Debug.Log(playerCount);
         readyButtonText.text = playerCount == 2 ? readyButtonTextDisabled : readyButtonTextEnabled;
         if (leaveButton == null)
             leaveButton = GameObject.Find("Leave Button").GetComponent<Button>();
