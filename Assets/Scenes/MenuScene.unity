@@ -324,7 +324,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menuSceneName: MenuScene
-  gameSceneName: TheGameScene
+  gameSceneName: GameScene
   menuCanvas: {fileID: 433328235}
   lobbyCanvas: {fileID: 173466396}
   lobbyInput: {fileID: 1501568385}

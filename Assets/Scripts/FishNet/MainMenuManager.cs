@@ -1,4 +1,5 @@
 using System;
+using FishNet.Managing;
 using Steamworks;
 using TMPro;
 using UnityEngine;
@@ -22,7 +23,15 @@ public class MainMenuManager : MonoBehaviour
 
     private void Start()
     {
-        OpenMainMenu();
+        Client client = FindAnyObjectByType<Client>();
+
+        if (client != null)
+        {
+            NetworkManager networkManager = FindFirstObjectByType<NetworkManager>();
+            LobbyEntered(SteamMatchmaking.GetLobbyData(new CSteamID(BootstrapManager.currentLobbyID), "name"), networkManager.IsServerStarted);
+        }
+        else
+            OpenMainMenu();
     }
 
     public void CreateLobby()

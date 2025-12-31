@@ -2,6 +2,8 @@ using System.Linq;
 using FishNet.Connection;
 using FishNet.Managing.Scened;
 using FishNet.Object;
+using Unity.VisualScripting;
+using UnityEngine;
 
 public class BootstrapNetworkManager : NetworkBehaviour
 {
@@ -9,6 +11,7 @@ public class BootstrapNetworkManager : NetworkBehaviour
 
     private void Awake() => instance = this;
 
+    [Server]
     public static void ChangeNetworkScene(string sceneName, string[] scenesToClose)
     {
         instance.CloseScenes(scenesToClose);
@@ -24,6 +27,7 @@ public class BootstrapNetworkManager : NetworkBehaviour
         CloseScenesObserver(scenesToClose);
     }
 
+    [ObserversRpc]
     private void CloseScenesObserver(string[] scenesToClose)
     {
         foreach (string sceneName in scenesToClose)

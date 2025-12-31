@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1802605843494480905}
   - component: {fileID: 628943589618923710}
   - component: {fileID: -3240206021568715326}
+  - component: {fileID: -3427789196554814342}
   m_Layer: 0
   m_Name: Client
   m_TagString: Untagged
@@ -63,7 +64,7 @@ MonoBehaviour:
   _initializeOrder: 0
   _preventDespawnOnDisconnect: 0
   _defaultDespawnType: 0
-  _initializedTimestamp: -8584361486706554068
+  _initializedTimestamp: -8584344220690313101
   NetworkObserver: {fileID: 0}
   _enablePrediction: 0
   _predictionType: 0
@@ -102,3 +103,15 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 628943589618923710}
   _networkObjectCache: {fileID: 628943589618923710}
+--- !u!114 &-3427789196554814342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5436143904361528126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9868c6695f4e064cb66acc5d2af6bd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

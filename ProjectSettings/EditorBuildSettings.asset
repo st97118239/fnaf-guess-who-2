@@ -6,14 +6,14 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/FishNetTesting/Bootstrap.unity
+    path: Assets/Scenes/Bootstrap.unity
     guid: ed155b872f6a29045a1fd008f0df54d4
   - enabled: 1
-    path: Assets/Scenes/FishNetTesting/MenuScene.unity
+    path: Assets/Scenes/MenuScene.unity
     guid: f8eb31e2cf206f34d80a3cd347334a83
   - enabled: 1
-    path: Assets/Scenes/FishNetTesting/TheGameScene.unity
-    guid: c801fd791d4dc6c47864eb12b4bfaa0e
+    path: Assets/Scenes/GameScene.unity
+    guid: 4ba6c38beed2fe64c9506a9321c95575
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
