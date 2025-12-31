@@ -1,22 +1,22 @@
-using System;
-using Mirror;
+//using System;
+//using Mirror;
 
-public class Player : NetworkBehaviour
-{
-    [SyncVar] public int playerIdx;
+//public class Player : NetworkBehaviour
+//{
+//    [SyncVar] public int playerIdx;
 
-    public CustomNetworkRoomPlayer roomPlayer;
+//    public CustomNetworkRoomPlayer roomPlayer;
 
-    private NetworkIdentity networkIdentity;
+//    private NetworkIdentity networkIdentity;
 
-    private void Start()
-    {
-        networkIdentity = GetComponent<NetworkIdentity>();
+//    private void Start()
+//    {
+//        networkIdentity = GetComponent<NetworkIdentity>();
 
-        if (isServer)
-        {
-            playerIdx = Convert.ToInt32(roomPlayer.GetComponent<NetworkIdentity>().netId);
-            playerIdx--;
-        }
-    }
-}
+//        if (isServer)
+//        {
+//            playerIdx = Convert.ToInt32(roomPlayer.GetComponent<NetworkIdentity>().netId);
+//            playerIdx--;
+//        }
+//    }
+//}

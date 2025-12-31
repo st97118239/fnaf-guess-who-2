@@ -11,30 +11,70 @@ public class One : MonoBehaviour
     {
         inputs = File.ReadAllLines("Assets/Resources/AdventOfCode/inputs.txt");
 
-        foreach (string t in inputs)
+        foreach (string input in inputs)
         {
-            int indexOf = t.IndexOf("-", StringComparison.Ordinal);
+            //ulong code = Convert.ToUInt64(input);
 
-            long i0 = Convert.ToInt64(t[..indexOf]);
+            int battery0 = -1;
+            int battery1 = -1;
 
-            long i1 = Convert.ToInt64(t[(indexOf + 1)..]);
-
-            long idx = i0;
-
-            while (idx <= i1)
+            for (int i = 9; i > -1; i--)
             {
-                string idxString = idx.ToString();
+                string num = i.ToString();
 
-                string s0 = idxString[..(idxString.Length / 2)];
-                string s1 = idxString[(idxString.Length / 2)..];
-
-                if (s0 == s1)
+                if (input.Contains(num))
                 {
-                    score += idx;
+                    int idx = input.IndexOf(num, StringComparison.Ordinal);
+
+                    if (battery0 == -1 && idx != input.Length - 1)
+                    {
+                        battery0 = idx;
+
+                        string newInput = input[(battery0 + 1)..];
+
+                        if (newInput.Contains(num))
+                        {
+                            int idx2 = newInput.IndexOf(num, StringComparison.Ordinal);
+
+                            battery1 = idx2 + idx + 1;
+                        }
+                    }
+                    else if (battery1 == -1)
+                        battery1 = idx;
                 }
 
-                idx++;
+                if (battery0 != -1 && battery1 != -1)
+                    break;
             }
+
+            if (battery1 <= battery0)
+            {
+                string newInput = input[(battery0 + 1)..];
+                battery1 = -1;
+
+                for (int i = 9; i > -1; i--)
+                {
+                    string num = i.ToString();
+
+                    if (newInput.Contains(num))
+                    {
+                        int idx = newInput.IndexOf(num, StringComparison.Ordinal);
+
+                        if (battery1 == -1)
+                            battery1 = idx + battery0 + 1;
+                    }
+
+                    if (battery0 != -1 && battery1 != -1)
+                        break;
+                }
+            }
+            //Debug.Log(battery0 + ", " + battery1);
+
+            //Debug.Log(input[battery0] + "" + input[battery1]);
+
+            string batteries = input[battery0] + "" + input[battery1];
+
+            score += Convert.ToInt32(batteries);
         }
     }
 }
