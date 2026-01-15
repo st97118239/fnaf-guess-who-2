@@ -1,0 +1,66 @@
+{
+    "characterName": "Freddy Fazbear",
+    "shortCharacterName": "Freddy",
+    "pronouns": "He/Him",
+    "description": "",
+    "decadeMade": 1970,
+    "yearMade": -1,
+    "estimatedYear": true,
+    "isBorn": false,
+    "yearDied": -1,
+    "reasonOfDeath": "",
+    "wasAlive": false,
+    "familyMembers": [],
+    "owners": [
+        "Fazbear Entertainment, Inc."
+    ],
+    "locations": [],
+    "occupation": "",
+    "employment": [
+        "Lead Vocalist",
+        "Mascot of Freddy Fazbear's Pizza"
+    ],
+    "affiliation": [
+        "Freddy Fazbear's Pizza"
+    ],
+    "aliases": [],
+    "animClass": "Classic Animatronic",
+    "model": "Bear",
+    "height": -1,
+    "weight": -1,
+    "mainColor": "Brown",
+    "secondaryColor": "",
+    "eyeColor": "Blue",
+    "clothes": "",
+    "teethType": "Square",
+    "armCount": "",
+    "legCount": "",
+    "state": "Whole",
+    "hasKilled": "",
+    "firstAppearance": "Five Nights at Freddy's",
+    "majorAppearances": [
+        "Five Nights at Freddy's",
+        "Ultimate Custom Night",
+        "Five Nights at Freddy's: Help Wanted",
+        "Five Nights at Freddy's AR: Special Delivery"
+    ],
+    "minorAppearances": [
+        "Five Nights at Freddy's 2",
+        "Five Nights at Freddy's 3"
+    ],
+    "cameos": [
+        "Five Nights at Freddy's 4",
+        "Five Nights at Freddy's: Sister Location",
+        "Freddy Fazbear's Pizzeria Simulator",
+        "Five Nights at Freddy's: Security Breach",
+        "Five Nights at Freddy's: Help Wanted 2",
+        "Five Nights at Freddy's: Help Wanted 2"
+    ],
+    "voiceActor": "Unkown",
+    "voicelinePaths": [],
+    "polaroidsPaths": [
+        "Portrait"
+    ],
+    "imagesPaths": [],
+    "path": ""
+}

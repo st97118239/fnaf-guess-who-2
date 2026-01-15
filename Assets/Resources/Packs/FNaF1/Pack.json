@@ -1,0 +1,13 @@
+{
+    "packName": "FNaF1",
+    "characters": [],
+    "characterPaths": [
+        "Freddy",
+        "Bonnie",
+        "Chica",
+        "Foxy",
+        "Golden Freddy"
+    ],
+    "imagePath": "Image",
+    "path": ""
+}

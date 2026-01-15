@@ -1,0 +1,56 @@
+using UnityEngine;
+using UnityEngine.Events;
+
+public class ObjMouseHover : MonoBehaviour
+{
+    [SerializeField] private UnityEvent pressedObj;
+    [SerializeField] private Outline outline;
+
+    [SerializeField] private GameObject canvasBlocker;
+    public Menu menu;
+
+    private bool isSelected;
+
+    private void OnMouseOver()
+    {
+        if (isSelected || !PlayerFlagsExtensions.HasFlag(InputManager.playerFlags, PlayerFlags.CanInteract)) return;
+
+        outline.enabled = true;
+
+        if (!Input.GetMouseButtonDown(0)) return;
+        Open();
+    }
+
+    public void OpenCharacterFolder(int idx)
+    {
+        Open();
+    }
+
+    public void Open()
+    {
+        isSelected = true;
+        pressedObj?.Invoke();
+    }
+
+    private void OnMouseExit()
+    {
+        if (isSelected) return;
+
+        outline.enabled = false;
+    }
+
+    public void Unselect()
+    {
+        isSelected = false;
+    }
+
+    public void CanvasBlocker(bool toggle)
+    {
+        if (!canvasBlocker)
+        {
+            Debug.LogError("No Canvas Blocker found");
+            return;
+        }
+        canvasBlocker.SetActive(toggle);
+    }
+}

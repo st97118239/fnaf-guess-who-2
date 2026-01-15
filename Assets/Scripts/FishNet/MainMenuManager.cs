@@ -18,6 +18,7 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private TMP_Text lobbyTitle;
     [SerializeField] private TMP_Text lobbyIDText;
     [SerializeField] private Button startGameButton;
+    [SerializeField] private Button tugboatStartGameButton;
 
     private void Awake() => instance = this;
 
@@ -25,13 +26,22 @@ public class MainMenuManager : MonoBehaviour
     {
         Client client = FindAnyObjectByType<Client>();
 
-        if (client != null)
+        if (Settings.isUsingSteamworks && client != null)
         {
             NetworkManager networkManager = FindFirstObjectByType<NetworkManager>();
             LobbyEntered(SteamMatchmaking.GetLobbyData(new CSteamID(BootstrapManager.currentLobbyID), "name"), networkManager.IsServerStarted);
         }
         else
+        {
             OpenMainMenu();
+
+            if (Settings.isUsingSteamworks) return;
+
+            tugboatStartGameButton.gameObject.SetActive(true);
+
+            if (client != null)
+                client.Unload();
+        }
     }
 
     public void CreateLobby()

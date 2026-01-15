@@ -33,7 +33,7 @@ public class BootstrapManager : MonoBehaviour
 
     public static void CreateLobby()
     {
-        SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, 4);
+        SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, 2);
     }
 
     private void OnLobbyCreated(LobbyCreated_t callback)

@@ -12,7 +12,7 @@ public class Client : NetworkBehaviour
 
     public void Load()
     {
-        if (IsOwner == false) return;
+        if (!IsOwner) return;
 
         int playerId = IsServerStarted ? 1 : 2;
         SetPlayer(playerId);

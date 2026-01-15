@@ -2,8 +2,6 @@ using System.Linq;
 using FishNet.Connection;
 using FishNet.Managing.Scened;
 using FishNet.Object;
-using Unity.VisualScripting;
-using UnityEngine;
 
 public class BootstrapNetworkManager : NetworkBehaviour
 {
