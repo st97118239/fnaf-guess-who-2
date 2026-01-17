@@ -11,14 +11,17 @@ public class Polaroid : MonoBehaviour
     [SerializeField] private CanvasGroup canvasGroup;
 
     private Character character;
-    private int idx = -1;
+    private int packIdx = -1;
+    private int charIdx = -1;
     private CharPack pack;
 
     private CharacterBoardManager charBoardMngr;
     
-    public void LoadChar(Character givenChar, CharacterBoardManager givenCharBoardMngr)
+    public void LoadChar(int givenPackIdx, int givenCharIdx, CharacterBoardManager givenCharBoardMngr)
     {
-        character = givenChar;
+        packIdx = givenPackIdx;
+        charIdx = givenCharIdx;
+        character = CharactersLoader.packs[packIdx].characters[charIdx];
 
         charBoardMngr = givenCharBoardMngr;
         characterImage.sprite = Resources.Load<Sprite>(character.polaroidsPaths[0]);
@@ -28,8 +31,8 @@ public class Polaroid : MonoBehaviour
 
     public void LoadPack(int givenPackIdx, CharacterBoardManager givenCharBoardMngr)
     {
-        idx = givenPackIdx;
-        pack = CharactersLoader.packs[idx];
+        packIdx = givenPackIdx;
+        pack = CharactersLoader.packs[packIdx];
 
         charBoardMngr = givenCharBoardMngr;
         characterImage.sprite = Resources.Load<Sprite>(pack.imagePath);
@@ -40,7 +43,8 @@ public class Polaroid : MonoBehaviour
     public void Unload()
     {
         character = null;
-        idx = -1;
+        packIdx = -1;
+        charIdx = -1;
         pack = null;
         canvasGroup.alpha = 0;
     }
@@ -48,8 +52,8 @@ public class Polaroid : MonoBehaviour
     public void Press()
     {
         if (pack != null)
-            charBoardMngr.OpenPack(idx);
+            charBoardMngr.OpenPack(packIdx);
         else if (character != null)
-            charBoardMngr.OpenFolder(idx);
+            charBoardMngr.OpenFolder(packIdx, charIdx);
     }
 }

@@ -11,7 +11,6 @@ public class Character
     public bool isBorn;
     public int yearDied = -1;
     public string reasonOfDeath;
-    public bool wasAlive;
     public string[] familyMembers;
     public string[] owners;
     public string[] locations;
@@ -26,12 +25,12 @@ public class Character
     public string mainColor;
     public string secondaryColor;
     public string eyeColor;
-    public string clothes;
+    public string[] clothes;
     public string teethType;
-    public string armCount;
-    public string legCount;
+    public int armCount = -1;
+    public int legCount = -1;
     public string state;
-    public string hasKilled;
+    public string[] hasKilled;
     public string firstAppearance;
     public string[] majorAppearances;
     public string[] minorAppearances;

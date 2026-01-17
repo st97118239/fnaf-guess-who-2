@@ -1,14 +1,18 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CharacterBoardManager : MonoBehaviour
 {
     [SerializeField] private CameraManager camMngr;
+    [SerializeField] private FolderManager fldrMngr;
     [SerializeField] private CharactersLoader charactersLoader;
     [SerializeField] private Polaroid polaroidPrefab;
     [SerializeField] private Transform polaroidParent;
 
     [SerializeField] private int characterCount;
     [SerializeField] private Polaroid[] polaroids;
+
+    [SerializeField] private Button backButton;
 
     private int openPackIdx;
 
@@ -27,6 +31,7 @@ public class CharacterBoardManager : MonoBehaviour
     private void LoadPacks()
     {
         openPackIdx = -1;
+        backButton.interactable = false;
         UnloadPolaroids();
         int max = CharactersLoader.packs.Count;
         for (int i = 0; i < max; i++)
@@ -44,6 +49,7 @@ public class CharacterBoardManager : MonoBehaviour
 
     private void LoadChars()
     {
+        backButton.interactable = true;
         UnloadPolaroids();
         int max = CharactersLoader.packs[openPackIdx].characters.Length;
         for (int i = 0; i < max; i++)
@@ -56,7 +62,7 @@ public class CharacterBoardManager : MonoBehaviour
             }
 
             if (i < max)
-                polaroids[i].LoadChar(character, this);
+                polaroids[i].LoadChar(openPackIdx, i, this);
         }
     }
 
@@ -66,9 +72,9 @@ public class CharacterBoardManager : MonoBehaviour
         LoadChars();
     }
 
-    public void OpenFolder(int idx)
+    public void OpenFolder(int packIdx, int charIdx)
     {
-        camMngr.folder.OpenCharacterFolder(idx);
+        camMngr.folder.OpenCharacterFolder(packIdx, charIdx);
     }
 
     public void BackButton()

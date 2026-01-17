@@ -9,7 +9,6 @@
     "isBorn": false,
     "yearDied": -1,
     "reasonOfDeath": "",
-    "wasAlive": false,
     "familyMembers": [],
     "owners": [
         "Fazbear Entertainment, Inc."
@@ -31,10 +30,10 @@
     "mainColor": "Brown",
     "secondaryColor": "",
     "eyeColor": "Blue",
-    "clothes": "",
+    "clothes": [],
     "teethType": "Square",
-    "armCount": "",
-    "legCount": "",
+    "armCount": 2,
+    "legCount": 2,
     "state": "Whole",
     "hasKilled": "",
     "firstAppearance": "Five Nights at Freddy's",

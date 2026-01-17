@@ -1,10 +1,6 @@
 using System.Collections.Generic;
-using UnityEngine;
-
-#if UNITY_EDITOR
 using System.IO;
-using UnityEditor;
-#endif
+using UnityEngine;
 
 public class CharactersLoader : MonoBehaviour
 {
@@ -13,32 +9,14 @@ public class CharactersLoader : MonoBehaviour
     public static List<CharPack> packs;
     public static List<Character> characters;
 
+    public List<CharPack> _packs;
+    public List<Character> _characters;
+
     private void Awake()
     {
         LoadCharacters();
-    }
-
-    private void SaveCharacters()
-    {
-#if UNITY_EDITOR
-        foreach (Character character in characters)
-        {
-            string json = JsonUtility.ToJson(character);
-            string pathToSaveChar = savePath + character.characterName + ".json";
-
-            if (File.Exists(pathToSaveChar))
-            {
-                Debug.Log("Replacing file " + pathToSaveChar);
-                File.Delete(pathToSaveChar);
-            }
-
-            File.WriteAllText(pathToSaveChar, json);
-            AssetDatabase.ImportAsset(pathToSaveChar);
-
-            Debug.Log("Saved " + character.characterName);
-        }
-#endif
-        characters.Clear();
+        _packs = packs;
+        _characters = characters;
     }
 
     private static void LoadCharacters()

@@ -10,6 +10,8 @@ public class ObjMouseHover : MonoBehaviour
     public Menu menu;
 
     private bool isSelected;
+    public int savedIdx = -1;
+    public int secondSavedIdx = -1;
 
     private void OnMouseOver()
     {
@@ -21,8 +23,10 @@ public class ObjMouseHover : MonoBehaviour
         Open();
     }
 
-    public void OpenCharacterFolder(int idx)
+    public void OpenCharacterFolder(int packIdx, int charIdx)
     {
+        savedIdx = packIdx;
+        secondSavedIdx = charIdx;
         Open();
     }
 
