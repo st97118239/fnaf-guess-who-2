@@ -1,0 +1,19 @@
+public enum GameCharacters
+{
+    None,
+    fnaf1,
+    fnaf2,
+    fnaf3,
+    fnaf4,
+    fnafWorld,
+    fnafSL,
+    pizzaSim,
+    ucn,
+    fnafHW,
+    fnafSD,
+    fnafSB,
+    fnafSBR,
+    fnafHW2,
+    fnafItP,
+    fnafSotM
+}

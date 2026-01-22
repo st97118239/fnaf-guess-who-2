@@ -1,8 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FolderManager : MonoBehaviour
 {
+    [SerializeField] private CameraManager camMngr;
+    [SerializeField] private CharacterBoardManager charBoardMngr;
     [SerializeField] private ObjMouseHover folderObj;
     [SerializeField] private PaperLine[] paperLines;
     [SerializeField] private RawLine[] linesRaw;
@@ -10,11 +13,18 @@ public class FolderManager : MonoBehaviour
     [SerializeField] private Transform paperLineParent;
     [SerializeField] private PaperLine paperLinePrefab;
 
+    [SerializeField] private GameObject paper;
+    [SerializeField] private Image paperImage;
+
+    [SerializeField] private Button prevButton;
+    [SerializeField] private Button nextButton;
+
     [SerializeField] private List<int> pages;
 
     public float totalHeight;
     public int totalPL;
     public int enabledPL;
+    public int loadedPL;
 
     public float maxHeight;
 
@@ -51,6 +61,7 @@ public class FolderManager : MonoBehaviour
         totalHeight = 0;
         totalPL = 0;
         enabledPL = 0;
+        loadedPL = 0;
 
         foreach (PaperLine pl in paperLines) 
             pl.Load();
@@ -113,10 +124,37 @@ public class FolderManager : MonoBehaviour
             break;
         }
 
-        if (totalHeight != 0) return;
-        Debug.LogError("No info could be displayed on the folder due to no space. Please largen the total height or reduce the amount of text in the string " + linesRaw[pages[^1]] + " in " + character.path);
-        pages.RemoveRange(pages.Count - 2, 2);
-        pageError = true;
-        PrevPage();
+        if (totalHeight == 0)
+        {
+            Debug.LogError(
+                "No info could be displayed on the folder due to no space. Please largen the total height or reduce the amount of text in the string " +
+                linesRaw[pages[^1]] + " in " + character.path);
+            pages.RemoveRange(pages.Count - 2, 2);
+            pageError = true;
+            PrevPage();
+        }
+
+        if (page == 0 && character.imagesPaths.Length > 0)
+        {
+            paperImage.sprite = Resources.Load<Sprite>(character.imagesPaths[0]);
+            paper.SetActive(true);
+        }
+        else
+        {
+            paper.SetActive(false);
+        }
+
+        prevButton.interactable = page != 0;
+        nextButton.interactable = page != pages.Count - 1;
+    }
+
+    public void LoadPackFromLink(string linkedGameID)
+    {
+        for (int i = 0; i < CharactersLoader.packs.Count; i++)
+        {
+            if (CharactersLoader.packs[i].linkedGameID != linkedGameID) continue;
+            charBoardMngr.OpenPack(i);
+            camMngr.characterBoard.Open();
+        }
     }
 }

@@ -1,5 +1,6 @@
 {
     "packName": "FNaF1",
+    "linkedGameID": "fnaf1",
     "characters": [],
     "characterPaths": [
         "Freddy",

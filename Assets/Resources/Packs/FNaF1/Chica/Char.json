@@ -38,6 +38,8 @@
     "polaroidsPaths": [
         "Portrait"
     ],
-    "imagesPaths": [],
+    "imagesPaths": [
+        "Image0"
+    ],
     "path": ""
 }

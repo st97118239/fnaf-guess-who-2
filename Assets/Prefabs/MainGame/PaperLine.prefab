@@ -37,7 +37,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 625, y: 55}
+  m_SizeDelta: {x: 500, y: 55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6403420920932299492
 MonoBehaviour:
@@ -57,6 +57,7 @@ MonoBehaviour:
   answer: {fileID: 902498364041432181}
   answerRectTrans: {fileID: 7373072766931533481}
   spaceBeforeAnswer: 4
+  canBeEnabled: 0
 --- !u!114 &414773788211222796
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,8 +178,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -250,6 +251,7 @@ GameObject:
   - component: {fileID: 6861052627928132348}
   - component: {fileID: 3768415176920915073}
   - component: {fileID: 6306577214098742230}
+  - component: {fileID: 676657204952369712}
   m_Layer: 0
   m_Name: Line
   m_TagString: Untagged
@@ -314,8 +316,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -376,3 +378,42 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &676657204952369712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8780235260554411581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1312ae25639a4bae8e25ae223209cc50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OnCharacterSelection:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSpriteSelection:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnWordSelection:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6403420920932299492}
+        m_TargetAssemblyTypeName: PaperLine, Assembly-CSharp
+        m_MethodName: test
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_OnLineSelection:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnLinkSelection:
+    m_PersistentCalls:
+      m_Calls: []

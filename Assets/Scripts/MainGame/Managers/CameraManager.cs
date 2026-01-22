@@ -14,17 +14,18 @@ public class CameraManager : MonoBehaviour
 
     private bool isLookingAtObj;
     private bool isMoving;
-    private bool wasOnMainBoard;
-    private bool wasOnCharBoard;
+    private bool isGoingBack;
 
     public void Back()
     {
         if (!isLookingAtObj || !PlayerFlagsExtensions.HasFlag(InputManager.playerFlags, PlayerFlags.CanInteract)) return;
 
-        if (wasOnMainBoard)
+        if (prevObjCamIsAt == mainBoard)
             mainBoard.Open();
-        else if (wasOnCharBoard)
+        else if (prevObjCamIsAt == characterBoard)
             characterBoard.Open();
+        else if (prevObjCamIsAt == folder)
+            folder.Open();
         else
             AnimateCam(true);
     }
@@ -33,27 +34,19 @@ public class CameraManager : MonoBehaviour
     {
         if (isLookingAtObj)
         {
+            if (prevObjCamIsAt == givenComponent)
+            {
+                isGoingBack = true;
+            }
+            else
+            {
+                isGoingBack = false;
+                if (prevObjCamIsAt != null)
+                    prevObjCamIsAt.Unselect();
+            }
+
             prevObjCamIsAt = objCamIsAt;
             objCamIsAt.CanvasBlocker(true);
-        }
-
-        if (InputManager.currentMenu != Menu.None)
-        {
-            switch (objCamIsAt.menu)
-            {
-                case Menu.MainBoard:
-                    wasOnMainBoard = true;
-                    wasOnCharBoard = false;
-                    break;
-                case Menu.CharacterBoard:
-                    wasOnMainBoard = false;
-                    wasOnCharBoard = true;
-                    break;
-                default:
-                    wasOnMainBoard = false;
-                    wasOnCharBoard = false;
-                    break;
-            }
         }
         objCamIsAt = givenComponent;
         AnimateCam(false);
@@ -98,7 +91,8 @@ public class CameraManager : MonoBehaviour
             if (prevObjCamIsAt)
             {
                 prevObjCamIsAt.Unselect();
-                prevObjCamIsAt = null;
+                if (isGoingBack || InputManager.currentMenu == Menu.None)
+                    prevObjCamIsAt = null;
             }
 
             if (InputManager.currentMenu != Menu.None) return;

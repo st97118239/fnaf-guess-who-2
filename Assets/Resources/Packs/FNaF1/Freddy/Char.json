@@ -36,30 +36,31 @@
     "legCount": 2,
     "state": "Whole",
     "hasKilled": "",
-    "firstAppearance": "Five Nights at Freddy's",
+    "firstAppearance": "fnaf1",
     "majorAppearances": [
-        "Five Nights at Freddy's",
-        "Ultimate Custom Night",
-        "Five Nights at Freddy's: Help Wanted",
-        "Five Nights at Freddy's AR: Special Delivery"
+        "fnaf1",
+        "ucn",
+        "fnafHW",
+        "fnafSD"
     ],
     "minorAppearances": [
-        "Five Nights at Freddy's 2",
-        "Five Nights at Freddy's 3"
+        "fnaf2",
+        "fnaf3"
     ],
     "cameos": [
-        "Five Nights at Freddy's 4",
-        "Five Nights at Freddy's: Sister Location",
-        "Freddy Fazbear's Pizzeria Simulator",
-        "Five Nights at Freddy's: Security Breach",
-        "Five Nights at Freddy's: Help Wanted 2",
-        "Five Nights at Freddy's: Help Wanted 2"
+        "fnaf4",
+        "fnafSL",
+        "pizzaSim",
+        "fnafSB",
+        "fnafHW2"
     ],
     "voiceActor": "Unkown",
     "voicelinePaths": [],
     "polaroidsPaths": [
         "Portrait"
     ],
-    "imagesPaths": [],
+    "imagesPaths": [
+        "Image0"
+    ],
     "path": ""
 }

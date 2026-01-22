@@ -1,9 +1,8 @@
-using System;
-using System.Reflection;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class PaperLine : MonoBehaviour
+public class PaperLine : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private RectTransform rectTrans;
     [SerializeField] private TMP_Text line;
@@ -24,8 +23,12 @@ public class PaperLine : MonoBehaviour
     private bool isInt;
     private bool isFloat;
 
+    private Camera cam;
+
     public void Setup(RawLine givenRawLine, FolderManager givenFolderManager)
     {
+        cam = Camera.main;
+
         fldrMngr = givenFolderManager;
         rawLine = givenRawLine;
 
@@ -213,8 +216,10 @@ public class PaperLine : MonoBehaviour
     {
         gameObject.SetActive(true);
         fldrMngr.enabledPL++;
-        lineRectTrans.sizeDelta = new Vector2(line.preferredWidth + spaceBeforeAnswer, lineRectTrans.sizeDelta.y);
-        answerRectTrans.sizeDelta = new Vector2(rectTrans.sizeDelta.x - lineRectTrans.sizeDelta.x, lineRectTrans.sizeDelta.y);
+        lineRectTrans.sizeDelta = new Vector2(line.preferredWidth + spaceBeforeAnswer, line.preferredHeight);
+        answerRectTrans.sizeDelta = new Vector2(rectTrans.sizeDelta.x - lineRectTrans.sizeDelta.x, 27.93f);
+        answerRectTrans.sizeDelta = new Vector2(rectTrans.sizeDelta.x - lineRectTrans.sizeDelta.x, answer.preferredHeight);
+        lineRectTrans.sizeDelta = new Vector2(line.preferredWidth + spaceBeforeAnswer, answer.preferredHeight);
         rectTrans.sizeDelta = new Vector2(rectTrans.sizeDelta.x, answer.preferredHeight);
         fldrMngr.totalHeight += rectTrans.sizeDelta.y;
     }
@@ -252,6 +257,14 @@ public class PaperLine : MonoBehaviour
             gameObject.SetActive(false);
             answer.text = string.Empty;
             return;
+        }
+
+        if (rawLine == RawLine.firstAppearance)
+        {
+            string text = foundAnswer;
+            string word = KeywordToGame(text);
+
+            foundAnswer = "<#0000EE><u><link=\"" + text + "\">" + word + "</link></u></color>";
         }
 
         answer.text = foundAnswer;
@@ -313,13 +326,31 @@ public class PaperLine : MonoBehaviour
             return;
         }
 
-        string fullText = string.Empty;
+        string[] answers = new string[foundAnswer.Length];
 
         for (int i = 0; i < foundAnswer.Length; i++)
         {
+            answers[i] = foundAnswer[i];
+        }
+
+        if (rawLine is RawLine.majorAppearances or RawLine.minorAppearances or RawLine.cameos)
+        {
+            for (int i = 0; i < answers.Length; i++)
+            {
+                string text = answers[i];
+                string word = KeywordToGame(text);
+
+                answers[i] = "<#0000EE><u><link=\"" + text + "\">" + word + "</link></u></color>";
+            }
+        }
+
+        string fullText = string.Empty;
+
+        for (int i = 0; i < answers.Length; i++)
+        {
             if (i > 0)
                 fullText += ", ";
-            fullText += foundAnswer[i];
+            fullText += answers[i];
         }
 
         answer.text = fullText;
@@ -395,5 +426,72 @@ public class PaperLine : MonoBehaviour
         }
 
         answer.text = foundAnswer + extraText;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Vector3 mousePos = new(eventData.position.x, eventData.position.y, 0);
+
+        int linkTaggedText = TMP_TextUtilities.FindIntersectingLink(answer, mousePos, cam);
+
+        if (linkTaggedText == -1) return;
+        TMP_LinkInfo linkInfo = answer.textInfo.linkInfo[linkTaggedText];
+
+        OnTextClicked(linkInfo.GetLinkText());
+    }
+
+    private void OnTextClicked(string link)
+    {
+        fldrMngr.LoadPackFromLink(GameToKeyword(link));
+    }
+
+    public static string KeywordToGame(string keyword)
+    {
+        string game = keyword switch
+        {
+            "fnaf1" => "Five Nights at Freddy's",
+            "fnaf2" => "Five Nights at Freddy's 2",
+            "fnaf3" => "Five Nights at Freddy's 3",
+            "fnaf4" => "Five Nights at Freddy's 4",
+            "fnafWorld" => "FNaF World",
+            "fnafSL" => "Five Nights at Freddy's: Sister Location",
+            "pizzaSim" => "Freddy Fazbear's Pizzeria Simulator",
+            "ucn" => "Ultimate Custom Night",
+            "fnafHW" => "Five Nights at Freddy's: Help Wanted",
+            "fnafSD" => "Five Nights at Freddy's AR: Special Delivery",
+            "fnafSB" => "Five Nights at Freddy's: Security Breach",
+            "fnafSBR" => "Five Nights at Freddy's: Security Breach RUIN",
+            "fnafHW2" => "Five Nights at Freddy's: Help Wanted 2",
+            "fnafItP" => "Five Nights at Freddy's: Into the Pit",
+            "fnafSotM" => "Five Nights at Freddy's: Secret of the Mimic",
+            _ => keyword
+        };
+
+        return game;
+    }
+
+    public static string GameToKeyword(string keyword)
+    {
+        string game = keyword switch
+        {
+            "Five Nights at Freddy's" => "fnaf1",
+            "Five Nights at Freddy's 2" => "fnaf2",
+            "Five Nights at Freddy's 3" => "fnaf3",
+            "Five Nights at Freddy's 4" => "fnaf4",
+            "FNaF World" => "fnafWorld",
+            "Five Nights at Freddy's: Sister Location" => "fnafSL",
+            "Freddy Fazbear's Pizzeria Simulator" => "pizzaSim",
+            "Ultimate Custom Night" => "ucn",
+            "Five Nights at Freddy's: Help Wanted" => "fnafHW",
+            "Five Nights at Freddy's AR: Special Delivery" => "fnafSD",
+            "Five Nights at Freddy's: Security Breach" => "fnafSB",
+            "Five Nights at Freddy's: Security Breach RUIN" => "fnafSBR",
+            "Five Nights at Freddy's: Help Wanted 2" => "fnafHW2",
+            "Five Nights at Freddy's: Into the Pit" => "fnafItP",
+            "Five Nights at Freddy's: Secret of the Mimic" => "fnafSotM",
+            _ => keyword
+        };
+
+        return game;
     }
 }
