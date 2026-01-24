@@ -21,10 +21,10 @@ public class Polaroid : MonoBehaviour
     {
         packIdx = givenPackIdx;
         charIdx = givenCharIdx;
-        character = CharactersLoader.packs[packIdx].characters[charIdx];
+        character = CharactersLoader.GetCharacter(packIdx, charIdx);
 
         charBoardMngr = givenCharBoardMngr;
-        characterImage.sprite = Resources.Load<Sprite>(character.polaroidsPaths[0]);
+        characterImage.sprite = CharactersLoader.GetCharacterPolaroid(character.path, 0);
         characterText.text = character.characterName;
         canvasGroup.alpha = 1;
     }
@@ -32,10 +32,10 @@ public class Polaroid : MonoBehaviour
     public void LoadPack(int givenPackIdx, CharacterBoardManager givenCharBoardMngr)
     {
         packIdx = givenPackIdx;
-        pack = CharactersLoader.packs[packIdx];
+        pack = CharactersLoader.GetPack(packIdx);
 
         charBoardMngr = givenCharBoardMngr;
-        characterImage.sprite = Resources.Load<Sprite>(pack.imagePath);
+        characterImage.sprite = CharactersLoader.GetPackImage(pack.path);
         characterText.text = pack.packName;
         canvasGroup.alpha = 1;
     }

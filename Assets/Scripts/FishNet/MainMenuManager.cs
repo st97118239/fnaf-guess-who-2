@@ -1,8 +1,10 @@
 using System;
+using System.Collections;
 using FishNet.Managing;
 using Steamworks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenuManager : MonoBehaviour
@@ -46,6 +48,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void CreateLobby()
     {
+        menuCanvas.SetActive(false);
         BootstrapManager.CreateLobby();
     }
 
@@ -77,6 +80,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void JoinLobby()
     {
+        menuCanvas.SetActive(false);
         CSteamID steamID = new(Convert.ToUInt64(lobbyInput.text));
         BootstrapManager.JoinByID(steamID);
     }
@@ -84,7 +88,9 @@ public class MainMenuManager : MonoBehaviour
     public void LeaveLobby()
     {
         BootstrapManager.LeaveLobby();
-        OpenMainMenu();
+
+        SceneManager.UnloadSceneAsync(menuSceneName);
+        SceneManager.LoadScene(menuSceneName, LoadSceneMode.Additive);
     }
 
     public void StartGame()

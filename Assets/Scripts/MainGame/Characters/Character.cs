@@ -1,3 +1,5 @@
+using UnityEngine;
+
 [System.Serializable]
 public class Character
 {
@@ -37,6 +39,8 @@ public class Character
     public string[] cameos;
     public string voiceActor;
     public string[] polaroidsPaths;
+    public Sprite[] polaroids;
     public string[] imagesPaths;
+    public Sprite[] images;
     public string path;
 }

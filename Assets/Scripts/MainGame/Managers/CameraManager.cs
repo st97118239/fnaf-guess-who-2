@@ -74,6 +74,7 @@ public class CameraManager : MonoBehaviour
             objCamIsAt.CanvasBlocker(false);
         }
 
+        InputManager.CheckBackButton();
     }
 
     public void ToggleInteractionWhileAnimation()
@@ -82,11 +83,14 @@ public class CameraManager : MonoBehaviour
         {
             isMoving = true;
             DisableInteraction();
+            InputManager.CheckBackButton();
         }
         else
         {
             isMoving = false;
             EnableInteraction();
+
+            InputManager.CheckBackButton();
 
             if (prevObjCamIsAt)
             {

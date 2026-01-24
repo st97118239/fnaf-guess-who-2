@@ -1,14 +1,5 @@
 {
     "packName": "FNaF1",
     "linkedGameID": "fnaf1",
-    "characters": [],
-    "characterPaths": [
-        "Freddy",
-        "Bonnie",
-        "Chica",
-        "Foxy",
-        "Golden Freddy"
-    ],
-    "imagePath": "Image",
-    "path": ""
+    "imagePath": "Image"
 }

@@ -51,11 +51,14 @@ public class CharacterBoardManager : MonoBehaviour
     {
         backButton.interactable = true;
         UnloadPolaroids();
-        int max = CharactersLoader.packs[openPackIdx].characters.Length;
+
+        string[] characterPaths = CharactersLoader.GetCharacterPathsFromPack(openPackIdx);
+
+        int max = characterPaths.Length;
         for (int i = 0; i < max; i++)
         {
-            Character character = CharactersLoader.packs[openPackIdx].characters[i];
-            if (character == null)
+            string character = characterPaths[i];
+            if (character == string.Empty)
             {
                 Debug.LogError("Character could not be loaded.");
                 continue;

@@ -337,10 +337,10 @@ public class PaperLine : MonoBehaviour, IPointerClickHandler
         {
             for (int i = 0; i < answers.Length; i++)
             {
-                string text = answers[i];
-                string word = KeywordToGame(text);
+                string link = answers[i];
+                string word = KeywordToGame(link);
 
-                answers[i] = "<#0000EE><u><link=\"" + text + "\">" + word + "</link></u></color>";
+                answers[i] = "<#0000EE><u><link=\"" + link + "\">" + word + "</link></u></color>";
             }
         }
 

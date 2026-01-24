@@ -39,7 +39,13 @@
         "Portrait"
     ],
     "imagesPaths": [
-        "Image0"
-    ],
-    "path": ""
+        "Image0",
+        "Image1",
+        "Image2",
+        "Image3",
+        "Image4",
+        "Image5",
+        "Image6",
+        "Image7"
+    ]
 }
