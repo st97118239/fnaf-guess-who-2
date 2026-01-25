@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,8 +23,11 @@ public class FolderManager : MonoBehaviour
 
     [SerializeField] private Button prevButton;
     [SerializeField] private Button nextButton;
+    [SerializeField] private Button audioButton;
 
     [SerializeField] private List<int> pages;
+
+    [SerializeField] private int voicelineChance;
 
     public float totalHeight;
     public int totalPL;
@@ -39,10 +43,18 @@ public class FolderManager : MonoBehaviour
     private bool isMovingBack;
     private bool isMovingPaper;
 
+    private Coroutine vlCoroutine;
+
     public Character character { get; private set; }
 
     private void Awake()
     {
+        if (voicelineChance > 100)
+        {
+            voicelineChance = 100;
+            Debug.LogWarning("VoicelineChance should not be over 100%!");
+        }
+
         paperLines = new PaperLine[linesRaw.Length];
 
         for (int i = 0; i < linesRaw.Length; i++)
@@ -63,9 +75,15 @@ public class FolderManager : MonoBehaviour
         Character foundChar = CharactersLoader.GetCharacter(folderObj.savedIdx, folderObj.secondSavedIdx);
 
         if (character == foundChar)
+        {
+            CheckIfVl();
+
             return;
+        }
 
         character = foundChar;
+
+        CheckIfVl();
 
         page = 0;
         pages = new List<int> { 0 };
@@ -79,7 +97,14 @@ public class FolderManager : MonoBehaviour
         enabledImgPapers = 0;
         imgPapersIdx = 0;
 
-        foreach (PaperLine pl in paperLines) 
+        StopVoiceline();
+
+        if (character.voicelines != null && character.voicelines.Length > 0)
+            audioButton.interactable = true;
+        else
+            audioButton.interactable = false;
+
+        foreach (PaperLine pl in paperLines)
             pl.Load();
 
         LoadNewPage(!pageError);
@@ -155,7 +180,6 @@ public class FolderManager : MonoBehaviour
             paper.isOn = false;
         }
 
-        // Image Papers Loader
         if (page == 0 && character.imagesPaths.Length > 0)
         {
             if (imagePapers.Length < character.imagesPaths.Length)
@@ -270,5 +294,35 @@ public class FolderManager : MonoBehaviour
 
         isMovingPaper = false;
         canMoveImgPapers = true;
+    }
+
+    public void AudioButton()
+    {
+        if (vlCoroutine != null)
+            StopCoroutine(vlCoroutine);
+        vlCoroutine = StartCoroutine(AudioTimer(AudioManager.PlayVoiceline(CharactersLoader.GetCharacterRngVoiceline(character.path))));
+    }
+
+    private IEnumerator AudioTimer(float time)
+    {
+        audioButton.interactable = false;
+
+        yield return new WaitForSeconds(time);
+
+        audioButton.interactable = true;
+    }
+
+    private void StopVoiceline()
+    {
+        if (vlCoroutine == null) return;
+
+        StopCoroutine(vlCoroutine);
+        AudioManager.StopVoicelines();
+    }
+
+    private void CheckIfVl()
+    {
+        if (Random.Range(1, 100) <= voicelineChance) 
+            AudioButton();
     }
 }

@@ -252,7 +252,7 @@ public class PaperLine : MonoBehaviour, IPointerClickHandler
             _ => null
         };
 
-        if (foundAnswer == string.Empty)
+        if (string.IsNullOrEmpty(foundAnswer))
         {
             gameObject.SetActive(false);
             answer.text = string.Empty;
@@ -261,10 +261,13 @@ public class PaperLine : MonoBehaviour, IPointerClickHandler
 
         if (rawLine == RawLine.firstAppearance)
         {
-            string text = foundAnswer;
-            string word = KeywordToGame(text);
+            string link = foundAnswer;
+            string word = CharactersLoader.linkWords[link];
 
-            foundAnswer = "<#0000EE><u><link=\"" + text + "\">" + word + "</link></u></color>";
+            if (CharactersLoader.CheckForPackID(link) != string.Empty)
+                foundAnswer = "<#0000EE><u><link=\"" + link + "\">" + word + "</link></u></color>";
+            else
+                foundAnswer = word;
         }
 
         answer.text = foundAnswer;
@@ -338,9 +341,12 @@ public class PaperLine : MonoBehaviour, IPointerClickHandler
             for (int i = 0; i < answers.Length; i++)
             {
                 string link = answers[i];
-                string word = KeywordToGame(link);
+                string word = CharactersLoader.linkWords[link];
 
-                answers[i] = "<#0000EE><u><link=\"" + link + "\">" + word + "</link></u></color>";
+                if (CharactersLoader.CheckForPackID(link) != string.Empty)
+                    answers[i] = "<#0000EE><u><link=\"" + link + "\">" + word + "</link></u></color>";
+                else
+                    answers[i] = word;
             }
         }
 
@@ -349,7 +355,7 @@ public class PaperLine : MonoBehaviour, IPointerClickHandler
         for (int i = 0; i < answers.Length; i++)
         {
             if (i > 0)
-                fullText += ", ";
+                fullText += ", <br>";
             fullText += answers[i];
         }
 
@@ -437,61 +443,11 @@ public class PaperLine : MonoBehaviour, IPointerClickHandler
         if (linkTaggedText == -1) return;
         TMP_LinkInfo linkInfo = answer.textInfo.linkInfo[linkTaggedText];
 
-        OnTextClicked(linkInfo.GetLinkText());
+        OnTextClicked(linkInfo.GetLinkID());
     }
 
     private void OnTextClicked(string link)
     {
-        fldrMngr.LoadPackFromLink(GameToKeyword(link));
-    }
-
-    public static string KeywordToGame(string keyword)
-    {
-        string game = keyword switch
-        {
-            "fnaf1" => "Five Nights at Freddy's",
-            "fnaf2" => "Five Nights at Freddy's 2",
-            "fnaf3" => "Five Nights at Freddy's 3",
-            "fnaf4" => "Five Nights at Freddy's 4",
-            "fnafWorld" => "FNaF World",
-            "fnafSL" => "Five Nights at Freddy's: Sister Location",
-            "pizzaSim" => "Freddy Fazbear's Pizzeria Simulator",
-            "ucn" => "Ultimate Custom Night",
-            "fnafHW" => "Five Nights at Freddy's: Help Wanted",
-            "fnafSD" => "Five Nights at Freddy's AR: Special Delivery",
-            "fnafSB" => "Five Nights at Freddy's: Security Breach",
-            "fnafSBR" => "Five Nights at Freddy's: Security Breach RUIN",
-            "fnafHW2" => "Five Nights at Freddy's: Help Wanted 2",
-            "fnafItP" => "Five Nights at Freddy's: Into the Pit",
-            "fnafSotM" => "Five Nights at Freddy's: Secret of the Mimic",
-            _ => keyword
-        };
-
-        return game;
-    }
-
-    public static string GameToKeyword(string keyword)
-    {
-        string game = keyword switch
-        {
-            "Five Nights at Freddy's" => "fnaf1",
-            "Five Nights at Freddy's 2" => "fnaf2",
-            "Five Nights at Freddy's 3" => "fnaf3",
-            "Five Nights at Freddy's 4" => "fnaf4",
-            "FNaF World" => "fnafWorld",
-            "Five Nights at Freddy's: Sister Location" => "fnafSL",
-            "Freddy Fazbear's Pizzeria Simulator" => "pizzaSim",
-            "Ultimate Custom Night" => "ucn",
-            "Five Nights at Freddy's: Help Wanted" => "fnafHW",
-            "Five Nights at Freddy's AR: Special Delivery" => "fnafSD",
-            "Five Nights at Freddy's: Security Breach" => "fnafSB",
-            "Five Nights at Freddy's: Security Breach RUIN" => "fnafSBR",
-            "Five Nights at Freddy's: Help Wanted 2" => "fnafHW2",
-            "Five Nights at Freddy's: Into the Pit" => "fnafItP",
-            "Five Nights at Freddy's: Secret of the Mimic" => "fnafSotM",
-            _ => keyword
-        };
-
-        return game;
+        fldrMngr.LoadPackFromLink((link));
     }
 }

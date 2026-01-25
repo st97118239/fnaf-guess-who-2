@@ -36,16 +36,16 @@
     "voiceActor": "",
     "voicelinePaths": [],
     "polaroidsPaths": [
-        "Portrait"
+        "Polaroids/Polaroid0"
     ],
     "imagesPaths": [
-        "Image0",
-        "Image1",
-        "Image2",
-        "Image3",
-        "Image4",
-        "Image5",
-        "Image6",
-        "Image7"
+        "Images/Image0",
+        "Images/Image1",
+        "Images/Image2",
+        "Images/Image3",
+        "Images/Image4",
+        "Images/Image5",
+        "Images/Image6",
+        "Images/Image7"
     ]
 }

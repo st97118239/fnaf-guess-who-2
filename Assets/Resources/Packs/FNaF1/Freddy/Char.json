@@ -2,7 +2,7 @@
     "characterName": "Freddy Fazbear",
     "shortCharacterName": "Freddy",
     "pronouns": "He/Him",
-    "description": "",
+    "description": "Freddy Fazbear is the titular antagonist of the Five Nights at Freddy's series and the main of the four original animatronics of Freddy Fazbear's Pizza.",
     "decadeMade": 1970,
     "yearMade": -1,
     "estimatedYear": true,
@@ -13,7 +13,9 @@
     "owners": [
         "Fazbear Entertainment, Inc."
     ],
-    "locations": [],
+    "locations": [
+        "Freddy Fazbear's Pizza"
+    ],
     "occupation": "",
     "employment": [
         "Lead Vocalist",
@@ -30,7 +32,10 @@
     "mainColor": "Brown",
     "secondaryColor": "",
     "eyeColor": "Blue",
-    "clothes": [],
+    "clothes": [
+        "Black top hat",
+        "Black bowtie"
+    ],
     "teethType": "Square",
     "armCount": 2,
     "legCount": 2,
@@ -57,18 +62,18 @@
     "voiceActor": "Unkown",
     "voicelinePaths": [],
     "polaroidsPaths": [
-        "Portrait"
+        "Polaroids/Polaroid0"
     ],
     "imagesPaths": [
-        "Image0",
-        "Image1",
-        "Image2",
-        "Image3",
-        "Image4",
-        "Image5",
-        "Image6",
-        "Image7",
-        "Image8",
-        "Image9"
+        "Images/Image0",
+        "Images/Image1",
+        "Images/Image2",
+        "Images/Image3",
+        "Images/Image4",
+        "Images/Image5",
+        "Images/Image6",
+        "Images/Image7",
+        "Images/Image8",
+        "Images/Image9"
     ]
 }

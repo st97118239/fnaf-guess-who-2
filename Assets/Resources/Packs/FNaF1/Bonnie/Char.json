@@ -10,43 +10,65 @@
     "yearDied": -1,
     "reasonOfDeath": "",
     "familyMembers": [],
-    "owners": [],
-    "locations": [],
+    "owners": [
+        "Fazbear Entertainment, Inc."
+    ],
+    "locations": [
+        "Freddy Fazbear's Pizza"
+    ],
     "occupation": "",
-    "employment": [],
-    "affiliation": [],
+    "employment": [
+        "Guitarist"
+    ],
+    "affiliation": [
+        "Freddy Fazbear's Pizza"
+    ],
     "aliases": [],
-    "animClass": "",
-    "model": "",
+    "animClass": "Classic Animatornic",
+    "model": "Rabbit",
     "height": -1,
     "weight": -1,
-    "mainColor": "",
-    "secondaryColor": "",
-    "eyeColor": "",
-    "clothes": [],
-    "teethType": "",
-    "armCount": -1,
-    "legCount": -1,
-    "state": "",
+    "mainColor": "Blue",
+    "secondaryColor": "Grey",
+    "eyeColor": "Pink",
+    "clothes": [
+        "Red bowtie"
+    ],
+    "teethType": "Round square",
+    "armCount": 2,
+    "legCount": 2,
+    "state": "Whole",
     "hasKilled": "",
-    "firstAppearance": "",
-    "majorAppearances": [],
-    "minorAppearances": [],
-    "cameos": [],
+    "firstAppearance": "fnaf1",
+    "majorAppearances": [
+        "fnaf1",
+        "ucn",
+        "fnafHW",
+        "fnafSD"
+    ],
+    "minorAppearances": [
+        "fnaf3"
+    ],
+    "cameos": [
+        "fnaf4",
+        "fnafSB",
+        "fnafHW2",
+        "fnafSotM"
+    ],
     "voiceActor": "",
     "voicelinePaths": [],
     "polaroidsPaths": [
-        "Portrait"
+        "Polaroids/Polaroid0"
     ],
     "imagesPaths": [
-        "Image0",
-        "Image1",
-        "Image2",
-        "Image3",
-        "Image4",
-        "Image5",
-        "Image6",
-        "Image7",
-        "Image8"
+        "Images/Image0",
+        "Images/Image1",
+        "Images/Image2",
+        "Images/Image3",
+        "Images/Image4",
+        "Images/Image5",
+        "Images/Image6",
+        "Images/Image7",
+        "Images/Image8"
     ]
 }

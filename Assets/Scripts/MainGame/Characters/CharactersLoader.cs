@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
+using TextAsset = UnityEngine.TextAsset;
 
 public class CharactersLoader : MonoBehaviour
 {
@@ -12,6 +15,25 @@ public class CharactersLoader : MonoBehaviour
 
     public static Dictionary<string, CharPack> packDict;
     public static Dictionary<string, Character> charDict;
+
+    public static Dictionary<string, string> linkWords = new()
+    {
+        { "fnaf1", "Five Nights at Freddy's" },
+        { "fnaf2", "Five Nights at Freddy's 2" },
+        { "fnaf3", "Five Nights at Freddy's 3" },
+        { "fnaf4", "Five Nights at Freddy's 4" },
+        { "fnafWorld", "FNaF World" },
+        { "fnafSL", "Five Nights at Freddy's: Sister Location" },
+        { "pizzaSim", "Freddy Fazbear's Pizzeria Simulator" },
+        { "ucn", "Ultimate Custom Night" },
+        { "fnafHW", "Five Nights at Freddy's: Help Wanted" },
+        { "fnafSD", "Five Nights at Freddy's AR: Special Delivery" },
+        { "fnafSB", "Five Nights at Freddy's: Security Breach" },
+        { "fnafSBR", "Five Nights at Freddy's: Security Breach RUIN" },
+        { "fnafHW2", "Five Nights at Freddy's: Help Wanted 2" },
+        { "fnafItP", "Five Nights at Freddy's: Into the Pit" },
+        { "fnafSotM", "Five Nights at Freddy's: Secret of the Mimic" }
+    };
 
     public List<string> _packs;
     public List<string> _characters;
@@ -27,6 +49,7 @@ public class CharactersLoader : MonoBehaviour
     {
         errorImage = _errorImage;
         LoadCharacters();
+
 
 #if UNITY_EDITOR
         _packs = packs;
@@ -195,10 +218,12 @@ public class CharactersLoader : MonoBehaviour
                 {
                     Debug.LogWarning("Character " + character.characterName + " has no full images.");
                 }
-                
+
                 characters.Add(path);
                 pack.characterPaths[i] = path;
                 charDict.Add(path, character);
+
+                LoadVoicelines(path);
             }
 
             if (hasError)
@@ -213,6 +238,7 @@ public class CharactersLoader : MonoBehaviour
                     {
                         pack.characterPaths[a] = pack.characterPaths[a + 1];
                     }
+
                     Array.Resize(ref pack.characterPaths, pack.characterPaths.Length - 1);
                 }
             }
@@ -241,13 +267,15 @@ public class CharactersLoader : MonoBehaviour
         catch
         {
             img = errorImage;
-            Debug.LogError("Image " + pack.imagePath + " is invalid. Make sure the image is an actual image and that it's a png.");
+            Debug.LogError("Image " + pack.imagePath +
+                           " is invalid. Make sure the image is an actual image and that it's a png.");
         }
 
         if (img == null)
         {
             img = errorImage;
-            Debug.LogError("Image " + pack.imagePath + " is invalid. Make sure the image is an actual image and that it's a png.");
+            Debug.LogError("Image " + pack.imagePath +
+                           " is invalid. Make sure the image is an actual image and that it's a png.");
         }
 
         pack.image = img;
@@ -259,7 +287,7 @@ public class CharactersLoader : MonoBehaviour
 
         if (character.polaroidsPaths.Length == 0)
         {
-            character.polaroids = new []{ errorImage };
+            character.polaroids = new[] { errorImage };
             Debug.LogWarning("There are no polaroids for " + character.characterName);
             return;
         }
@@ -276,13 +304,15 @@ public class CharactersLoader : MonoBehaviour
             catch
             {
                 img = errorImage;
-                Debug.LogError("Polaroid " + character.polaroidsPaths[i] + " is invalid. Make sure the image is an actual image and that it's a png.");
+                Debug.LogError("Polaroid " + character.polaroidsPaths[i] +
+                               " is invalid. Make sure the image is an actual image and that it's a png.");
             }
 
             if (img == null)
             {
                 img = errorImage;
-                Debug.LogError("Polaroid " + character.polaroidsPaths[i] + " is invalid. Make sure the image is an actual image and that it's a png.");
+                Debug.LogError("Polaroid " + character.polaroidsPaths[i] +
+                               " is invalid. Make sure the image is an actual image and that it's a png.");
             }
 
             character.polaroids[i] = img;
@@ -295,7 +325,7 @@ public class CharactersLoader : MonoBehaviour
 
         if (character.imagesPaths.Length == 0)
         {
-            character.images = new []{ errorImage };
+            character.images = new[] { errorImage };
             Debug.LogWarning("There are no images for " + character.characterName);
             return;
         }
@@ -312,22 +342,178 @@ public class CharactersLoader : MonoBehaviour
             catch
             {
                 img = errorImage;
-                Debug.LogError("Image " + character.imagesPaths[i] + " is invalid. Make sure the image is an actual image and that it's a png.");
+                Debug.LogError("Image " + character.imagesPaths[i] +
+                               " is invalid. Make sure the image is an actual image and that it's a png.");
             }
 
             if (img == null)
             {
                 img = errorImage;
-                Debug.LogError("Image " + character.imagesPaths[i] + " is invalid. Make sure the image is an actual image and that it's a png.");
+                Debug.LogError("Image " + character.imagesPaths[i] +
+                               " is invalid. Make sure the image is an actual image and that it's a png.");
             }
 
             character.images[i] = img;
         }
     }
 
+    private static void LoadVoicelines(string charPath)
+    {
+        Character character = GetCharacter(charPath);
+
+        string fullPath = "Assets/Resources/" + charPath; // Assets/Resources/Packs/PACK/CHARACTER/
+
+        if (!File.Exists(fullPath + "/Voicelines.txt"))
+        {
+            Debug.LogError("Voicelines.txt couldn't be found for " + character.characterName + ".");
+            return;
+        }
+
+        string[] vlPaths = File.ReadAllLines("Assets/Resources/" + charPath + "Voicelines.txt");
+
+        if (vlPaths.Length == 0)
+        {
+            Debug.LogError("Voicelines.txt for " + character.characterName + " is empty.");
+            return;
+        }
+
+        character.voicelines = new Voiceline[vlPaths.Length];
+
+        for (int i = 0; i < vlPaths.Length; i++)
+        {
+            string vlPath = vlPaths[i];
+
+            Voiceline voiceline = FindVoiceline(fullPath, vlPath, charPath);
+
+            character.voicelines[i] = voiceline;
+        }
+
+        if (character.voicelines == null || character.voicelines.Length == 0)
+        {
+            Debug.LogWarning("No voicelines could be loaded for " + character.characterName + ".");
+            return;
+        }
+
+        List<Voiceline> tempVoicelineList = new();
+
+        foreach (Voiceline voiceline in character.voicelines)
+        {
+            if (voiceline == null)
+            {
+                Debug.Log("Empty voiceline found, skipping...");
+                continue;
+            }
+
+            AudioClip clip = FindClip(voiceline, charPath);
+
+            if (clip == null)
+            {
+                Debug.LogError("Clip at " + voiceline.audioPath + " could not be found.");
+                continue;
+            }
+
+            voiceline.audio = clip;
+
+            if (!string.IsNullOrEmpty(voiceline.nextVlPath))
+                voiceline.nextVl = FindNextVoiceline(fullPath, voiceline.nextVlPath, charPath);
+
+            tempVoicelineList.Add(voiceline);
+        }
+    }
+
+    private static Voiceline FindVoiceline(string fullPath, string vlPath, string charPath)
+    {
+        if (!File.Exists(fullPath + vlPath + ".json"))
+        {
+            Debug.LogError("Voiceline " + vlPath + " for " + charPath + " couldn't be found.");
+            return null;
+        }
+
+        TextAsset vlText = Resources.Load<TextAsset>(charPath + vlPath);
+
+        if (vlText == null)
+        {
+            Debug.LogError(vlPath + ".json could not be found.");
+            return null;
+        }
+
+        if (vlText.text == string.Empty)
+        {
+            Debug.LogError(vlPath + ".json is empty.");
+            return null;
+        }
+
+        string json = vlText.text;
+
+        Voiceline voiceline;
+        try
+        {
+            voiceline = JsonUtility.FromJson<Voiceline>(json);
+        }
+        catch
+        {
+            Debug.LogError(vlPath + ".json is invalid.");
+            return null;
+        }
+
+        if (!string.IsNullOrEmpty(voiceline.audioPath)) return voiceline;
+        Debug.LogError("The voiceline path for " + vlPath + " is invalid.");
+        return null;
+
+    }
+
+    private static AudioClip FindClip(Voiceline voiceline, string charPath)
+    {
+        if (voiceline == null)
+        {
+            Debug.LogWarning("Non existent voiceline found for " + charPath + ".");
+            return null;
+        }
+
+        if (string.IsNullOrEmpty(voiceline.audioPath))
+        {
+            Debug.LogWarning("Empty voiceline found at " + voiceline.audioPath + ".");
+            return null;
+        }
+
+        AudioClip clip;
+
+        try
+        {
+            clip = Resources.Load<AudioClip>(charPath + voiceline.audioPath);
+        }
+        catch
+        {
+            Debug.LogError("Audio clip at " + voiceline.audioPath + " could not be loaded correctly.");
+            return null;
+        }
+
+        if (clip != null) return clip;
+        Debug.LogWarning("Empty audio clip found at " + voiceline.audioPath + ".");
+        return null;
+
+    }
+
+    private static Voiceline FindNextVoiceline(string fullPath, string vlPath, string charPath)
+    {
+        Voiceline voiceline = FindVoiceline(fullPath, vlPath, charPath);
+
+        voiceline.audio = FindClip(voiceline, charPath);
+
+        if (!string.IsNullOrEmpty(voiceline.nextVlPath))
+            voiceline.nextVl = FindNextVoiceline(fullPath, voiceline.nextVlPath, charPath);
+
+        return voiceline;
+    }
+
     public static CharPack GetPack(int idx)
     {
         return packDict[packs[idx]];
+    }
+
+    public static CharPack GetPack(string path)
+    {
+        return packDict[path];
     }
 
     public static string[] GetCharacterPathsFromPack(int idx)
@@ -387,7 +573,7 @@ public class CharactersLoader : MonoBehaviour
 
         if (character.polaroids == null || character.polaroids.Length == 0)
         {
-            Debug.LogError("No polaroids found for character " + character.characterName);
+            Debug.LogWarning("No polaroids found for character " + character.characterName);
             return null;
         }
 
@@ -408,7 +594,7 @@ public class CharactersLoader : MonoBehaviour
 
         if (character.images == null || character.images.Length == 0)
         {
-            Debug.LogError("No images found for character " + character.characterName);
+            Debug.LogWarning("No images found for character " + character.characterName);
             return null;
         }
 
@@ -416,5 +602,52 @@ public class CharactersLoader : MonoBehaviour
 
         Debug.LogError("Not enough images for character " + character.characterName + ". Given index is " + idx);
         return null;
+    }
+
+    public static Voiceline GetCharacterVoiceline(string charPath, int idx)
+    {
+        Character character = charDict[charPath];
+
+        if (character.voicelines == null || character.voicelines.Length == 0)
+        {
+            Debug.LogWarning("No voicelines found for character " + character.characterName);
+            return null;
+        }
+
+        if (character.voicelines.Length >= idx + 1) return character.voicelines[idx];
+
+        Debug.LogError("Not enough voicelines for character " + character.characterName + ". Given index is " + idx);
+        return null;
+    }
+
+    public static Voiceline GetCharacterRngVoiceline(string charPath)
+    {
+        Character character = charDict[charPath];
+
+        if (character.voicelines == null || character.voicelines.Length == 0)
+        {
+            Debug.LogWarning("No voicelines found for character " + character.characterName);
+            return null;
+        }
+
+        int idx = Random.Range(0, character.voicelines.Length);
+
+        if (character.voicelines.Length >= idx + 1) return character.voicelines[idx];
+
+        Debug.LogError("Not enough voicelines for character " + character.characterName + ". Given index is " + idx);
+        return null;
+    }
+
+    public static string CheckForPackID(string id)
+    {
+        string foundId = string.Empty;
+
+        foreach (CharPack pack in packs.Select(GetPack).Where(pack => pack.linkedGameID == id))
+        {
+            foundId = pack.path;
+            break;
+        }
+
+        return foundId;
     }
 }

@@ -42,5 +42,6 @@ public class Character
     public Sprite[] polaroids;
     public string[] imagesPaths;
     public Sprite[] images;
+    public Voiceline[] voicelines;
     public string path;
 }

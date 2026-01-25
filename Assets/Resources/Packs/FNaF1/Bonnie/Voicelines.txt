@@ -1,0 +1,6 @@
+Voicelines/Jumpscare0
+Voicelines/Groan0
+Voicelines/Groan1
+Voicelines/Groan2
+Voicelines/Groan3
+Voicelines/Jumpscare1

@@ -1,0 +1,4 @@
+Voicelines/Giggle
+Voicelines/Gibberish
+Voicelines/Jumpscare0
+Voicelines/Jumpscare1
