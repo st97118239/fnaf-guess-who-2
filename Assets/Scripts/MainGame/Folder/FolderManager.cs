@@ -21,6 +21,8 @@ public class FolderManager : MonoBehaviour
     [SerializeField] private int imgPapersIdx;
     [SerializeField] private int maxImgPapers;
 
+    [SerializeField] private Polaroid polaroid;
+
     [SerializeField] private Button prevButton;
     [SerializeField] private Button nextButton;
     [SerializeField] private Button audioButton;
@@ -35,8 +37,10 @@ public class FolderManager : MonoBehaviour
     public int loadedPL;
 
     public float maxHeight;
+    public float polaroidHeight;
+    public float maxWidthWhenPolaroid;
 
-    private int page;
+    public int page;
     private bool pageError;
 
     private bool canMoveImgPapers;
@@ -81,9 +85,14 @@ public class FolderManager : MonoBehaviour
             return;
         }
 
+        StopVoiceline();
+
         character = foundChar;
 
+        CharactersLoader.LoadVoicelines(character.path);
         CheckIfVl();
+
+        polaroid.LoadCharBasic(character.path);
 
         page = 0;
         pages = new List<int> { 0 };
@@ -94,10 +103,10 @@ public class FolderManager : MonoBehaviour
         loadedPL = 0;
         canMoveImgPapers = false;
         isMovingBack = false;
+        isMovingPaper = false;
         enabledImgPapers = 0;
         imgPapersIdx = 0;
 
-        StopVoiceline();
 
         if (character.voicelines != null && character.voicelines.Length > 0)
             audioButton.interactable = true;
@@ -180,23 +189,26 @@ public class FolderManager : MonoBehaviour
             paper.isOn = false;
         }
 
-        if (page == 0 && character.imagesPaths.Length > 0)
+        if (page == 0)
         {
-            if (imagePapers.Length < character.imagesPaths.Length)
+            polaroid.Show();
+
+            if (character.imagesPaths.Length > 0)
             {
-                GeneratePaperImages(character.imagesPaths.Length);
+                if (imagePapers.Length < character.imagesPaths.Length) 
+                    GeneratePaperImages(character.imagesPaths.Length);
+
+                for (int i = 0; i < character.imagesPaths.Length; i++)
+                {
+                    imagePapers[i].Load(CharactersLoader.GetCharacterImage(character.path, i));
+                }
+
+                enabledImgPapers = character.imagesPaths.Length;
+                canMoveImgPapers = enabledImgPapers > 1;
             }
-
-            for (int i = 0; i < character.imagesPaths.Length; i++)
-            {
-                imagePapers[i].Load(CharactersLoader.GetCharacterImage(character.path, i));
-            }
-
-            imgPapersIdx = 0;
-            enabledImgPapers = character.imagesPaths.Length;
-            canMoveImgPapers = enabledImgPapers > 1;
-
         }
+        else
+            polaroid.Hide();
 
         foreach (Paper paper in imagePapers)
         {
@@ -206,6 +218,9 @@ public class FolderManager : MonoBehaviour
             StartCoroutine(paper.ResetPos());
         }
 
+        isMovingPaper = false;
+        isMovingBack = false;
+        imgPapersIdx = 0;
         prevButton.interactable = page != 0;
         nextButton.interactable = page != pages.Count - 1;
     }

@@ -22,9 +22,22 @@ public class Polaroid : MonoBehaviour
         packIdx = givenPackIdx;
         charIdx = givenCharIdx;
         character = CharactersLoader.GetCharacter(packIdx, charIdx);
-
         charBoardMngr = givenCharBoardMngr;
-        characterImage.sprite = CharactersLoader.GetCharacterPolaroid(character.path, 0);
+
+        Load();
+    }
+
+    public void LoadCharBasic(string path)
+    {
+        character = CharactersLoader.GetCharacter(path);
+
+        Load();
+    }
+
+    private void Load()
+    {
+        Sprite sprite = CharactersLoader.GetCharacterPolaroid(character.path, 0);
+        characterImage.sprite = sprite != null ? sprite : CharactersLoader.errorImage;
         characterText.text = character.characterName;
         canvasGroup.alpha = 1;
     }
@@ -37,6 +50,16 @@ public class Polaroid : MonoBehaviour
         charBoardMngr = givenCharBoardMngr;
         characterImage.sprite = CharactersLoader.GetPackImage(pack.path);
         characterText.text = pack.packName;
+        canvasGroup.alpha = 1;
+    }
+
+    public void Hide()
+    {
+        canvasGroup.alpha = 0;
+    }
+
+    public void Show()
+    {
         canvasGroup.alpha = 1;
     }
 

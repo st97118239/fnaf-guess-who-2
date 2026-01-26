@@ -13,6 +13,7 @@ public class CharacterBoardManager : MonoBehaviour
     [SerializeField] private Polaroid[] polaroids;
 
     [SerializeField] private Button backButton;
+    [SerializeField] private Button reloadButton;
 
     private int openPackIdx;
 
@@ -20,6 +21,12 @@ public class CharacterBoardManager : MonoBehaviour
 
     private void SpawnPolaroids()
     {
+        if (polaroids != null)
+        {
+            foreach (Polaroid polaroid in polaroids)
+                Destroy(polaroid.gameObject);
+        }
+
         polaroids = new Polaroid[characterCount];
 
         for (int i = 0; i < characterCount; i++) 
@@ -39,6 +46,7 @@ public class CharacterBoardManager : MonoBehaviour
             if (i < max)
                 polaroids[i].LoadPack(i, this);
         }
+        reloadButton.interactable = true;
     }
 
     private void UnloadPolaroids()
@@ -49,7 +57,7 @@ public class CharacterBoardManager : MonoBehaviour
 
     private void LoadChars()
     {
-        backButton.interactable = true;
+        reloadButton.interactable = false;
         UnloadPolaroids();
 
         string[] characterPaths = CharactersLoader.GetCharacterPathsFromPack(openPackIdx);
@@ -67,6 +75,7 @@ public class CharacterBoardManager : MonoBehaviour
             if (i < max)
                 polaroids[i].LoadChar(openPackIdx, i, this);
         }
+        backButton.interactable = true;
     }
 
     public void OpenPack(int packIdx)
@@ -84,5 +93,16 @@ public class CharacterBoardManager : MonoBehaviour
     {
         if (openPackIdx > -1)
             LoadPacks();
+    }
+
+    public void ReloadButton()
+    {
+        reloadButton.interactable = false;
+
+        UnloadPolaroids();
+
+        CharactersLoader.ReloadCharacters();
+
+        SpawnPolaroids();
     }
 }

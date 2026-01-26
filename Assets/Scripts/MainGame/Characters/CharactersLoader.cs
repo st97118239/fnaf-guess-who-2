@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using TextAsset = UnityEngine.TextAsset;
@@ -41,12 +42,15 @@ public class CharactersLoader : MonoBehaviour
     public List<CharPack> _packsList;
     public List<Character> _charactersList;
 
-    private static Sprite errorImage;
+    public static Sprite errorImage;
 
     [SerializeField] private Sprite _errorImage;
 
+    private static CharactersLoader instance;
+
     private void Awake()
     {
+        instance = this;
         errorImage = _errorImage;
         LoadCharacters();
 
@@ -222,8 +226,6 @@ public class CharactersLoader : MonoBehaviour
                 characters.Add(path);
                 pack.characterPaths[i] = path;
                 charDict.Add(path, character);
-
-                LoadVoicelines(path);
             }
 
             if (hasError)
@@ -357,15 +359,18 @@ public class CharactersLoader : MonoBehaviour
         }
     }
 
-    private static void LoadVoicelines(string charPath)
+    public static void LoadVoicelines(string charPath)
     {
         Character character = GetCharacter(charPath);
+
+        Debug.Log("Loading the voicelines for " + character.characterName + "...");
 
         string fullPath = "Assets/Resources/" + charPath; // Assets/Resources/Packs/PACK/CHARACTER/
 
         if (!File.Exists(fullPath + "/Voicelines.txt"))
         {
             Debug.LogError("Voicelines.txt couldn't be found for " + character.characterName + ".");
+            character.voicelines = Array.Empty<Voiceline>();
             return;
         }
 
@@ -374,10 +379,18 @@ public class CharactersLoader : MonoBehaviour
         if (vlPaths.Length == 0)
         {
             Debug.LogError("Voicelines.txt for " + character.characterName + " is empty.");
+            character.voicelines = Array.Empty<Voiceline>();
             return;
         }
 
         character.voicelines = new Voiceline[vlPaths.Length];
+
+        if (character.voicelines == null || character.voicelines.Length == 0)
+        {
+            Debug.LogWarning("No voicelines could be loaded for " + character.characterName + ".");
+            character.voicelines = Array.Empty<Voiceline>();
+            return;
+        }
 
         for (int i = 0; i < vlPaths.Length; i++)
         {
@@ -386,12 +399,6 @@ public class CharactersLoader : MonoBehaviour
             Voiceline voiceline = FindVoiceline(fullPath, vlPath, charPath);
 
             character.voicelines[i] = voiceline;
-        }
-
-        if (character.voicelines == null || character.voicelines.Length == 0)
-        {
-            Debug.LogWarning("No voicelines could be loaded for " + character.characterName + ".");
-            return;
         }
 
         List<Voiceline> tempVoicelineList = new();
@@ -419,6 +426,10 @@ public class CharactersLoader : MonoBehaviour
 
             tempVoicelineList.Add(voiceline);
         }
+
+        character.voicelines = tempVoicelineList.ToArray();
+
+        Debug.Log("Finished loading voicelines.");
     }
 
     private static Voiceline FindVoiceline(string fullPath, string vlPath, string charPath)
@@ -587,7 +598,7 @@ public class CharactersLoader : MonoBehaviour
     {
         Character character = charDict[charPath];
 
-        if (character.images == null || character.images.Length == 0)
+        if (character.images == null)
         {
             LoadCharImages(charPath);
         }
@@ -608,6 +619,12 @@ public class CharactersLoader : MonoBehaviour
     {
         Character character = charDict[charPath];
 
+        if (character.voicelines == null)
+        {
+            Debug.Log("No voicelines loaded yet for " + character.characterName + ". Loading them now.");
+            LoadVoicelines(charPath);
+        }
+
         if (character.voicelines == null || character.voicelines.Length == 0)
         {
             Debug.LogWarning("No voicelines found for character " + character.characterName);
@@ -623,6 +640,12 @@ public class CharactersLoader : MonoBehaviour
     public static Voiceline GetCharacterRngVoiceline(string charPath)
     {
         Character character = charDict[charPath];
+
+        if (character.voicelines == null)
+        {
+            Debug.Log("No voicelines loaded yet for " + character.characterName + ". Loading them now.");
+            LoadVoicelines(charPath);
+        }
 
         if (character.voicelines == null || character.voicelines.Length == 0)
         {
@@ -649,5 +672,27 @@ public class CharactersLoader : MonoBehaviour
         }
 
         return foundId;
+    }
+
+    public static void ReloadCharacters()
+    {
+        LoadCharacters();
+
+#if UNITY_EDITOR
+        instance._packs = packs;
+        instance._characters = characters;
+        instance._packsList = new List<CharPack>();
+        instance._charactersList = new List<Character>();
+
+        foreach (string packPath in instance._packs)
+        {
+            instance._packsList.Add(packDict[packPath]);
+        }
+
+        foreach (string charPath in instance._characters)
+        {
+            instance._charactersList.Add(charDict[charPath]);
+        }
+#endif
     }
 }

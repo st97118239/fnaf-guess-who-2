@@ -216,11 +216,14 @@ public class PaperLine : MonoBehaviour, IPointerClickHandler
     {
         gameObject.SetActive(true);
         fldrMngr.enabledPL++;
+        float lineSizeX = 500;
+        if (fldrMngr.page == 0 && fldrMngr.totalHeight < fldrMngr.polaroidHeight)
+            lineSizeX = fldrMngr.maxWidthWhenPolaroid;
         lineRectTrans.sizeDelta = new Vector2(line.preferredWidth + spaceBeforeAnswer, line.preferredHeight);
-        answerRectTrans.sizeDelta = new Vector2(rectTrans.sizeDelta.x - lineRectTrans.sizeDelta.x, 27.93f);
-        answerRectTrans.sizeDelta = new Vector2(rectTrans.sizeDelta.x - lineRectTrans.sizeDelta.x, answer.preferredHeight);
+        answerRectTrans.sizeDelta = new Vector2(lineSizeX - lineRectTrans.sizeDelta.x, 27.93f);
+        answerRectTrans.sizeDelta = new Vector2(lineSizeX - lineRectTrans.sizeDelta.x, answer.preferredHeight);
         lineRectTrans.sizeDelta = new Vector2(line.preferredWidth + spaceBeforeAnswer, answer.preferredHeight);
-        rectTrans.sizeDelta = new Vector2(rectTrans.sizeDelta.x, answer.preferredHeight);
+        rectTrans.sizeDelta = new Vector2(lineSizeX, answer.preferredHeight);
         fldrMngr.totalHeight += rectTrans.sizeDelta.y;
     }
 
